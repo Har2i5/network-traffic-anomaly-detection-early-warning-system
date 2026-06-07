@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "skyblue", "font": {"color": "white"}, "id": "WS_4", "label": "WS_4", "shape": "dot", "size": 20}, {"color": "red", "font": {"color": "white"}, "id": "ASN_3671", "label": "ASN_3671", "shape": "dot", "size": 15}, {"color": "skyblue", "font": {"color": "white"}, "id": "WS_1", "label": "WS_1", "shape": "dot", "size": 20}, {"color": "red", "font": {"color": "white"}, "id": "ASN_3265", "label": "ASN_3265", "shape": "dot", "size": 15}, {"color": "skyblue", "font": {"color": "white"}, "id": "WS_2", "label": "WS_2", "shape": "dot", "size": 20}, {"color": "red", "font": {"color": "white"}, "id": "ASN_19918", "label": "ASN_19918", "shape": "dot", "size": 15}, {"color": "skyblue", "font": {"color": "white"}, "id": "WS_9", "label": "WS_9", "shape": "dot", "size": 20}, {"color": "red", "font": {"color": "white"}, "id": "ASN_15169", "label": "ASN_15169", "shape": "dot", "size": 15}, {"color": "skyblue", "font": {"color": "white"}, "id": "WS_8", "label": "WS_8", "shape": "dot", "size": 20}, {"color": "red", "font": {"color": "white"}, "id": "ASN_7018", "label": "ASN_7018", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_19916", "label": "ASN_19916", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_14780", "label": "ASN_14780", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_33651", "label": "ASN_33651", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_3307", "label": "ASN_3307", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_33438", "label": "ASN_33438", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_2108", "label": "ASN_2108", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_2152", "label": "ASN_2152", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_1312", "label": "ASN_1312", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_9316", "label": "ASN_9316", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_33650", "label": "ASN_33650", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_7377", "label": "ASN_7377", "shape": "dot", "size": 15}, {"color": "skyblue", "font": {"color": "white"}, "id": "WS_0", "label": "WS_0", "shape": "dot", "size": 20}, {"color": "red", "font": {"color": "white"}, "id": "ASN_33070", "label": "ASN_33070", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_5779", "label": "ASN_5779", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_31976", "label": "ASN_31976", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_36088", "label": "ASN_36088", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_5650", "label": "ASN_5650", "shape": "dot", "size": 15}, {"color": "skyblue", "font": {"color": "white"}, "id": "WS_7", "label": "WS_7", "shape": "dot", "size": 20}, {"color": "red", "font": {"color": "white"}, "id": "ASN_21844", "label": "ASN_21844", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_7132", "label": "ASN_7132", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_9318", "label": "ASN_9318", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_13749", "label": "ASN_13749", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_1239", "label": "ASN_1239", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_4766", "label": "ASN_4766", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_18924", "label": "ASN_18924", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_31983", "label": "ASN_31983", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_6539", "label": "ASN_6539", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_3462", "label": "ASN_3462", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_17222", "label": "ASN_17222", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_9371", "label": "ASN_9371", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_6478", "label": "ASN_6478", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_7314", "label": "ASN_7314", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_7996", "label": "ASN_7996", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_32666", "label": "ASN_32666", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_5662", "label": "ASN_5662", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_26101", "label": "ASN_26101", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_24940", "label": "ASN_24940", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_9848", "label": "ASN_9848", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_35017", "label": "ASN_35017", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_19548", "label": "ASN_19548", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_12322", "label": "ASN_12322", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_2828", "label": "ASN_2828", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_12302", "label": "ASN_12302", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_13462", "label": "ASN_13462", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_3561", "label": "ASN_3561", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_4713", "label": "ASN_4713", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_4134", "label": "ASN_4134", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_8689", "label": "ASN_8689", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_15076", "label": "ASN_15076", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_6517", "label": "ASN_6517", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_8402", "label": "ASN_8402", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_12168", "label": "ASN_12168", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_9800", "label": "ASN_9800", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_3320", "label": "ASN_3320", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_17557", "label": "ASN_17557", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_29895", "label": "ASN_29895", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_4279", "label": "ASN_4279", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_29863", "label": "ASN_29863", "shape": "dot", "size": 15}, {"color": "red", "font": {"color": "white"}, "id": "ASN_4837", "label": "ASN_4837", "shape": "dot", "size": 15}]);
+                  edges = new vis.DataSet([{"from": "WS_4", "title": "Flows: 1058245", "to": "ASN_3671", "value": 1058245}, {"from": "WS_1", "title": "Flows: 105272", "to": "ASN_3265", "value": 105272}, {"from": "WS_2", "title": "Flows: 24252", "to": "ASN_19918", "value": 24252}, {"from": "WS_9", "title": "Flows: 23639", "to": "ASN_15169", "value": 23639}, {"from": "WS_8", "title": "Flows: 23443", "to": "ASN_15169", "value": 23443}, {"from": "WS_2", "title": "Flows: 22202", "to": "ASN_7018", "value": 22202}, {"from": "WS_8", "title": "Flows: 15804", "to": "ASN_19916", "value": 15804}, {"from": "WS_9", "title": "Flows: 14983", "to": "ASN_14780", "value": 14983}, {"from": "WS_4", "title": "Flows: 12762", "to": "ASN_33651", "value": 12762}, {"from": "WS_1", "title": "Flows: 11948", "to": "ASN_3307", "value": 11948}, {"from": "WS_1", "title": "Flows: 11491", "to": "ASN_33438", "value": 11491}, {"from": "WS_1", "title": "Flows: 10818", "to": "ASN_2108", "value": 10818}, {"from": "WS_9", "title": "Flows: 10077", "to": "ASN_2152", "value": 10077}, {"from": "WS_2", "title": "Flows: 9530", "to": "ASN_1312", "value": 9530}, {"from": "WS_2", "title": "Flows: 9387", "to": "ASN_9316", "value": 9387}, {"from": "WS_2", "title": "Flows: 9265", "to": "ASN_33650", "value": 9265}, {"from": "WS_2", "title": "Flows: 8991", "to": "ASN_7377", "value": 8991}, {"from": "WS_0", "title": "Flows: 8220", "to": "ASN_33070", "value": 8220}, {"from": "WS_9", "title": "Flows: 7192", "to": "ASN_5779", "value": 7192}, {"from": "WS_4", "title": "Flows: 7107", "to": "ASN_31976", "value": 7107}, {"from": "WS_9", "title": "Flows: 7005", "to": "ASN_36088", "value": 7005}, {"from": "WS_2", "title": "Flows: 6844", "to": "ASN_5650", "value": 6844}, {"from": "WS_0", "title": "Flows: 6814", "to": "ASN_9316", "value": 6814}, {"from": "WS_7", "title": "Flows: 6652", "to": "ASN_21844", "value": 6652}, {"from": "WS_4", "title": "Flows: 6362", "to": "ASN_7132", "value": 6362}, {"from": "WS_0", "title": "Flows: 5709", "to": "ASN_9318", "value": 5709}, {"from": "WS_2", "title": "Flows: 5280", "to": "ASN_33070", "value": 5280}, {"from": "WS_8", "title": "Flows: 5156", "to": "ASN_13749", "value": 5156}, {"from": "WS_2", "title": "Flows: 5134", "to": "ASN_1239", "value": 5134}, {"from": "WS_7", "title": "Flows: 4969", "to": "ASN_15169", "value": 4969}, {"from": "WS_1", "title": "Flows: 4565", "to": "ASN_4766", "value": 4565}, {"from": "WS_7", "title": "Flows: 4452", "to": "ASN_18924", "value": 4452}, {"from": "WS_4", "title": "Flows: 4447", "to": "ASN_4766", "value": 4447}, {"from": "WS_8", "title": "Flows: 4416", "to": "ASN_4766", "value": 4416}, {"from": "WS_4", "title": "Flows: 4375", "to": "ASN_31983", "value": 4375}, {"from": "WS_0", "title": "Flows: 4358", "to": "ASN_31983", "value": 4358}, {"from": "WS_2", "title": "Flows: 4336", "to": "ASN_6539", "value": 4336}, {"from": "WS_2", "title": "Flows: 4243", "to": "ASN_13749", "value": 4243}, {"from": "WS_1", "title": "Flows: 4212", "to": "ASN_31983", "value": 4212}, {"from": "WS_2", "title": "Flows: 4182", "to": "ASN_3462", "value": 4182}, {"from": "WS_2", "title": "Flows: 4170", "to": "ASN_17222", "value": 4170}, {"from": "WS_8", "title": "Flows: 4166", "to": "ASN_9371", "value": 4166}, {"from": "WS_2", "title": "Flows: 4099", "to": "ASN_31983", "value": 4099}, {"from": "WS_0", "title": "Flows: 4073", "to": "ASN_6478", "value": 4073}, {"from": "WS_0", "title": "Flows: 4051", "to": "ASN_7314", "value": 4051}, {"from": "WS_4", "title": "Flows: 3873", "to": "ASN_7996", "value": 3873}, {"from": "WS_4", "title": "Flows: 3810", "to": "ASN_7314", "value": 3810}, {"from": "WS_4", "title": "Flows: 3809", "to": "ASN_1239", "value": 3809}, {"from": "WS_2", "title": "Flows: 3698", "to": "ASN_32666", "value": 3698}, {"from": "WS_1", "title": "Flows: 3698", "to": "ASN_32666", "value": 3698}, {"from": "WS_0", "title": "Flows: 3698", "to": "ASN_32666", "value": 3698}, {"from": "WS_4", "title": "Flows: 3698", "to": "ASN_32666", "value": 3698}, {"from": "WS_8", "title": "Flows: 3564", "to": "ASN_5662", "value": 3564}, {"from": "WS_9", "title": "Flows: 3441", "to": "ASN_26101", "value": 3441}, {"from": "WS_1", "title": "Flows: 3436", "to": "ASN_24940", "value": 3436}, {"from": "WS_8", "title": "Flows: 3428", "to": "ASN_9848", "value": 3428}, {"from": "WS_0", "title": "Flows: 3422", "to": "ASN_24940", "value": 3422}, {"from": "WS_0", "title": "Flows: 3416", "to": "ASN_13749", "value": 3416}, {"from": "WS_1", "title": "Flows: 3371", "to": "ASN_35017", "value": 3371}, {"from": "WS_0", "title": "Flows: 3371", "to": "ASN_19548", "value": 3371}, {"from": "WS_2", "title": "Flows: 3271", "to": "ASN_9318", "value": 3271}, {"from": "WS_4", "title": "Flows: 3167", "to": "ASN_24940", "value": 3167}, {"from": "WS_2", "title": "Flows: 3166", "to": "ASN_19548", "value": 3166}, {"from": "WS_8", "title": "Flows: 3078", "to": "ASN_9318", "value": 3078}, {"from": "WS_4", "title": "Flows: 3052", "to": "ASN_33070", "value": 3052}, {"from": "WS_4", "title": "Flows: 3006", "to": "ASN_9316", "value": 3006}, {"from": "WS_0", "title": "Flows: 2851", "to": "ASN_12322", "value": 2851}, {"from": "WS_4", "title": "Flows: 2844", "to": "ASN_2828", "value": 2844}, {"from": "WS_4", "title": "Flows: 2840", "to": "ASN_12322", "value": 2840}, {"from": "WS_0", "title": "Flows: 2827", "to": "ASN_3462", "value": 2827}, {"from": "WS_1", "title": "Flows: 2807", "to": "ASN_12302", "value": 2807}, {"from": "WS_0", "title": "Flows: 2775", "to": "ASN_4766", "value": 2775}, {"from": "WS_0", "title": "Flows: 2744", "to": "ASN_13462", "value": 2744}, {"from": "WS_9", "title": "Flows: 2742", "to": "ASN_3561", "value": 2742}, {"from": "WS_2", "title": "Flows: 2736", "to": "ASN_4766", "value": 2736}, {"from": "WS_0", "title": "Flows: 2698", "to": "ASN_3561", "value": 2698}, {"from": "WS_8", "title": "Flows: 2690", "to": "ASN_4713", "value": 2690}, {"from": "WS_2", "title": "Flows: 2652", "to": "ASN_33651", "value": 2652}, {"from": "WS_4", "title": "Flows: 2551", "to": "ASN_4134", "value": 2551}, {"from": "WS_1", "title": "Flows: 2546", "to": "ASN_13749", "value": 2546}, {"from": "WS_8", "title": "Flows: 2524", "to": "ASN_8689", "value": 2524}, {"from": "WS_8", "title": "Flows: 2501", "to": "ASN_15076", "value": 2501}, {"from": "WS_4", "title": "Flows: 2480", "to": "ASN_13749", "value": 2480}, {"from": "WS_2", "title": "Flows: 2454", "to": "ASN_24940", "value": 2454}, {"from": "WS_7", "title": "Flows: 2408", "to": "ASN_6517", "value": 2408}, {"from": "WS_2", "title": "Flows: 2389", "to": "ASN_8402", "value": 2389}, {"from": "WS_4", "title": "Flows: 2376", "to": "ASN_8402", "value": 2376}, {"from": "WS_0", "title": "Flows: 2374", "to": "ASN_8402", "value": 2374}, {"from": "WS_9", "title": "Flows: 2337", "to": "ASN_12168", "value": 2337}, {"from": "WS_8", "title": "Flows: 2296", "to": "ASN_9800", "value": 2296}, {"from": "WS_1", "title": "Flows: 2200", "to": "ASN_3320", "value": 2200}, {"from": "WS_8", "title": "Flows: 2182", "to": "ASN_17557", "value": 2182}, {"from": "WS_4", "title": "Flows: 2167", "to": "ASN_6478", "value": 2167}, {"from": "WS_4", "title": "Flows: 2157", "to": "ASN_3462", "value": 2157}, {"from": "WS_0", "title": "Flows: 2120", "to": "ASN_1239", "value": 2120}, {"from": "WS_4", "title": "Flows: 2102", "to": "ASN_29895", "value": 2102}, {"from": "WS_4", "title": "Flows: 2073", "to": "ASN_4279", "value": 2073}, {"from": "WS_8", "title": "Flows: 2014", "to": "ASN_29863", "value": 2014}, {"from": "WS_1", "title": "Flows: 1911", "to": "ASN_4837", "value": 1911}, {"from": "WS_0", "title": "Flows: 1908", "to": "ASN_9371", "value": 1908}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "barnesHut": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.3,
+            "damping": 0.09,
+            "gravitationalConstant": -80000,
+            "springConstant": 0.001,
+            "springLength": 250
+        },
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

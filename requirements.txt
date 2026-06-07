@@ -1,0 +1,25 @@
+
+pandas
+numpy
+
+# Visualization
+matplotlib
+plotly
+
+# Machine Learning
+scikit-learn
+
+# Time Series Forecasting
+prophet
+
+# Dashboard
+streamlit
+
+# Database
+sqlalchemy
+psycopg2-binary
+
+# Utilities
+python-dateutil
+
+openpyxl
