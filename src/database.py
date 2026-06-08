@@ -1,19 +1,4 @@
-from sqlalchemy import create_engine
-
-# DB_USER = "postgres"
-# DB_PASSWORD = "postgres"
-# DB_HOST = "localhost"
-# DB_PORT = "5432"
-# DB_NAME = "network_intelligence"
-
-# # DATABASE_URL = (
-# #     f"postgresql://{DB_USER}:{DB_PASSWORD}"
-# #     f"@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-# # )
-
-# engine = create_engine(
-#     "postgresql://postgres:postgres@host.docker.internal:5432/network_intelligence"
-# )
+import pandas as pd
 from sqlalchemy import create_engine
 import os
 
@@ -23,3 +8,20 @@ DATABASE_URL = os.getenv(
 )
 
 engine = create_engine(DATABASE_URL)
+
+pd.read_sql(
+    "SELECT * FROM traffic_features",
+    engine
+).to_csv("data/traffic_features.csv", index=False)
+
+pd.read_sql(
+    "SELECT * FROM traffic_forecasts",
+    engine
+).to_csv("data/traffic_forecasts.csv", index=False)
+
+pd.read_sql(
+    "SELECT * FROM risk_scores",
+    engine
+).to_csv("data/risk_scores.csv", index=False)
+
+print("Export complete")

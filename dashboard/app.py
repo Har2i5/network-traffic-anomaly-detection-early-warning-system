@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from sqlalchemy import create_engine
 
 # PAGE CONFIG
 
@@ -13,39 +12,29 @@ st.set_page_config(
     layout="wide"
 )
 
-
-# DATABASE CONNECTION
-
-
-engine = create_engine(
-    "postgresql://postgres:postgres@localhost:5432/network_intelligence"
-)
-
 # LOAD DATA
 
 
 @st.cache_data
 def load_data():
 
-    features = pd.read_sql(
-        "SELECT * FROM traffic_features",
-        engine
+    features = pd.read_csv(
+        "data/traffic_features.csv"
     )
 
-    forecasts = pd.read_sql(
-        "SELECT * FROM traffic_forecasts",
-        engine
+    forecasts = pd.read_csv(
+        "data/traffic_forecasts.csv"
     )
 
-    risks = pd.read_sql(
-        "SELECT * FROM risk_scores",
-        engine
+    risks = pd.read_csv(
+        "data/risk_scores.csv"
     )
-    raw_df = pd.read_sql(
-        "SELECT * FROM network_raw",
-        engine
+
+    raw_df = pd.read_csv(
+        "data/cs448b_ipasn.csv"
     )
-    return features, forecasts, risks,raw_df
+
+    return features, forecasts, risks, raw_df
 
 
 features, forecasts, risks,raw_df = load_data()
